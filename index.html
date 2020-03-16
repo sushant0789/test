@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Video embeder</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script language="JavaScript">
+        function showInput() {
+            var myurl = document.getElementById("url").value;
+            $.get("/dataparser/", {
+                url: myurl
+            }, function (data) {
+                iniciarPlayer(data);
+                $(".lds-roller").remove();
+            }, "json");
+
+        }
+
+        function iniciarPlayer(dataVideo) {
+            document.getElementById('GfGInput').innerHTML = dataVideo.url
+        }
+    </script>
+</head>
+
+<body style="border-style: solid;">
+    <section>
+        <form class="form-horizontal">
+            <fieldset>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="url">URL:</label>
+                    <div class="col-md-4">
+                        <input id="url" name="url" type="text" placeholder="" class="form-control input-md">
+
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="submit"></label>
+            <div class="col-md-4">
+                <button id="submit" name="submit" class="btn btn-primary" onclick="showInput();">submit</button>
+            </div>
+        </div><br>
+        <div id="GfGInput" style="background-color: green;"> </div>
+        <button onclick="done()">Copy text</button>
+
+    </section>
+    <script>
+        function done() {
+            var range = document.createRange();
+            var x = document.getElementById("GfGInput")
+            range.selectNode(x);
+            window.getSelection().removeAllRanges(); // clear current selection
+            window.getSelection().addRange(range); // to select text
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges(); // to deselect
+            alert("Copied");
+        }
+    </script>
+</body>
+
+</html>
